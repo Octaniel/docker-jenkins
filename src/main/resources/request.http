@@ -1,4 +1,4 @@
-GET http://localhost:8080/?comand=git add .
+GET http://localhost:8081/rr?version=1.4
 Accept: application/json
 
 ###
