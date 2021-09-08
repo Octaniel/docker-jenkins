@@ -46,7 +46,7 @@ public class DockerJenkinsApplication {
     }
     @RequestMapping("")
     public String restw(){
-        return "LLLLLLLLLLLLLLLL";
+        return "QQQQQQQQQQQQQQQQ";
     }
 
     @RequestMapping("rr")
