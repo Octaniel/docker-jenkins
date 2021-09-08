@@ -1,0 +1,40 @@
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ develop ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: otaniel
+          password: otanieljos
+      - name: Build with Maven
+        run: |
+          mvn package
+          docker build -t octajsdev .
+          docker tag octajsdev otaniel/octajsdev
+          docker push otaniel/octajsdev
+      - name: ssh-pipeline
+        uses: cross-the-world/ssh-pipeline@v1.2.0
+        with:
+          host: webapp.b-software.st
+          user: bsoftware
+          pass: batepa1953@ssh
+          script: |
+            echo batepa1953@ssh|sudo -S sudo docker rm octajsdev -f
+            echo batepa1953@ssh|sudo -S docker rmi $(echo batepa1953@ssh|sudo -S docker images otaniel/octajsdev -a -q) -f
+            echo batepa1953@ssh|sudo -S sudo docker run --name octajsdev -d -p 8083:8081 otaniel/octajsdev --restart
