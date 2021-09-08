@@ -37,6 +37,6 @@ jobs:
           user: bsoftware
           pass: batepa1953@ssh
           script: |
-            echo batepa1953@ssh|sudo -S docker rmi $(echo batepa1953@ssh|sudo -S docker images otaniel/octajs -a -q) -f
             echo batepa1953@ssh|sudo -S sudo docker rm octajs -f
+            echo batepa1953@ssh|sudo -S docker rmi $(echo batepa1953@ssh|sudo -S docker images otaniel/octajs -a -q) -f
             echo batepa1953@ssh|sudo -S sudo docker run --name octajs -d -p 8082:8081 otaniel/octajs:1.5 --restart
