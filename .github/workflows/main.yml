@@ -22,21 +22,21 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
-          username: ${secrets.USER_DOCKER}
-          password: ${secrets.PASS_DOCKER}
+          username: ${{secrets.USER_DOCKER}}
+          password: ${{secrets.PASS_DOCKER}}
       - name: Build with Maven
         run: |
           mvn package
           docker build -t octajs .
-          docker tag octajs ${secrets.USER_DOCKER}/octajs
-          docker push ${secrets.USER_DOCKER}/octajs
+          docker tag octajs ${{secrets.USER_DOCKER}}/octajs
+          docker push ${{secrets.USER_DOCKER}}/octajs
       - name: ssh-pipeline
         uses: cross-the-world/ssh-pipeline@v1.2.0
         with:
-          host: ${secrets.HOST_SSH}
-          user: ${secrets.USER_SSH}
-          pass: ${secrets.PASS_SSH}
+          host: ${{secrets.HOST_SSH}}
+          user: ${{secrets.USER_SSH}}
+          pass: ${{secrets.PASS_SSH}}
           script: |
-            echo ${secrets.PASS_SSH}|sudo -S sudo docker rm octajs -f
-            echo ${secrets.PASS_SSH}|sudo -S docker rmi $(echo batepa1953@ssh|sudo -S docker images otaniel/octajs -a -q) -f
-            echo ${secrets.PASS_SSH}|sudo -S sudo docker run --name octajs -d -p 8082:8081 otaniel/octajs:1.5 --restart
+            echo ${{secrets.PASS_SSH}}|sudo -S sudo docker rm octajs -f
+            echo ${{secrets.PASS_SSH}}|sudo -S docker rmi $(echo batepa1953@ssh|sudo -S docker images otaniel/octajs -a -q) -f
+            echo ${{secrets.PASS_SSH}}|sudo -S sudo docker run --name octajs -d -p 8082:8081 otaniel/octajs:1.5 --restart
