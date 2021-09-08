@@ -21,18 +21,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Build with Maven
-        run: mvn package
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
           username: otaniel
           password: otanieljos
-      - name: Push to Docker Hub
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: otaniel/octajs:1.5
+      - name: Build with Maven
+        run: |
+          mvn package
+          docker build -t octajs .
+          docker tag octajs otaniel/octajs:1.5
+          docker push otaniel/octajs:1.5
       - name: ssh-pipeline
         uses: cross-the-world/ssh-pipeline@v1.2.0
         with:
